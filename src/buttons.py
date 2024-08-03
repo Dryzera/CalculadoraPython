@@ -4,7 +4,12 @@ from PySide6.QtWidgets import QGridLayout
 from utils import isNumOrDot, isEmpty, isValidNumber
 from display import Display
 from variables import MEDIUM_FONT_SIZE
-import variables
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from display import Display
+    from info import Info
+
 
 class Button(QPushButton):
     def __init__(self, *args, **kwargs):
@@ -19,10 +24,10 @@ class Button(QPushButton):
         self.setProperty('cssClass', 'specialButton')
 
 class ButtonsGrid(QGridLayout):
-    def __init__(self, display: Display, *args, **kwargs) -> None:
+    def __init__(self, display: 'Display', info: 'Info', *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.display = display
-
+        self.info = info
         self._grid_mask = [
             ['C', '◀', '^', '/'],
             ['7', '8', '9', '*'],
@@ -30,6 +35,19 @@ class ButtonsGrid(QGridLayout):
             ['1', '2', '3', '+'],
             ['',  '0', '.', '='],
         ]
+        self._equation = ''
+        self._makeGrid()
+
+    
+    @property
+    def equation(self):
+        return self._equation
+    
+    @equation.setter
+    def equation(self, value):
+        self._equation = value
+        self.info.setText(self._equation)
+        return self._equation
 
     
     def _makeGrid(self):
@@ -46,13 +64,6 @@ class ButtonsGrid(QGridLayout):
                 )
                 button.clicked.connect(buttonSlot)
 
-
-    def _makeButtonDisplay(self, func, *args, **kwargs):
-        @Slot()
-        def realSlot():
-            func(*args, **kwargs)
-        return realSlot
-    
     def _insertButtomTextToDisplay(self, button):
         buttonText = button.text()
         newDisplayValue = self.display.text() + buttonText
@@ -61,3 +72,10 @@ class ButtonsGrid(QGridLayout):
             return
 
         self.display.insert(buttonText)
+
+    def _makeButtonDisplay(self, func, *args, **kwargs):
+        @Slot()
+        def realSlot():
+            func(*args, **kwargs)
+        return realSlot
+

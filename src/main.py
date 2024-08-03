@@ -18,14 +18,14 @@ if __name__ == '__main__':
 
     # INFO
     info = Info('Nenhuma Conta')
-    window.add_Widget_V_Layout(info)
+    window.addWidgetToVLayout(info)
 
     display = Display()
-    window.add_Widget_V_Layout(display)
+    window.addWidgetToVLayout(display)
 
     # Grid
-    buttonsGrid = ButtonsGrid(display, info, window)
-    window.add_Widget_V_Layout(buttonsGrid)
+    buttonsGrid = ButtonsGrid(display, info)
+    window.vLayout.addLayout(buttonsGrid)
 
     window.adjustFixedSize()
     window.show()
