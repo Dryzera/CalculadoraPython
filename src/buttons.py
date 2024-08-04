@@ -56,8 +56,7 @@ class ButtonsGrid(QGridLayout):
             for j, button_text in enumerate(row):
                 button = Button(button_text)
                 if not isNumOrDot(button_text) and not isEmpty(button_text):
-                    button.setStyleSheet(f'background-color: {DARKER_PRIMARY_COLOR}')
-                    print(button_text, 2222222222222)
+                    button.setProperty('cssClass', 'specialButton')
 
                 self.addWidget(button, i, j)
                 buttonSlot = self._makeButtonDisplay(
