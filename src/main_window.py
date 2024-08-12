@@ -21,4 +21,5 @@ class MainWindow(QMainWindow):
         # ultimos ajustes
         self.adjustSize()
         self.setFixedSize(self.width(), self.height())
+
         
